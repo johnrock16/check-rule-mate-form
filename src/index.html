@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Check Rule Mate Form</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+</head>
+<body>
+  <style>
+    html {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #DDDDDD;
+    }
+    h1 {
+      margin-bottom: 24px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    #form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    #form div {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 16px;
+    }
+
+    #form input {
+      width: 100%;
+      height: 28px;
+      padding: 4px 8px;
+      font-size: 16px;
+      background-color: #f4f4f4;
+      border: 1px solid #a4a4a4;
+    }
+
+    .field-error {
+      color: darkred;
+      font-weight: 600;
+    }
+
+    button {
+      width: 100%;
+      height: 48px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      background-color: cadetblue;
+      border: 1px solid white;
+      cursor: pointer;
+    }
+  </style>
+  <main>
+    <div class="container">
+      <h1>Check Rule Mate Form</h1>
+      <form id="form">
+        <div>
+          <label for="name">Name</label>
+          <input name="name" type="text"/>
+        </div>
+        <div>
+          <label for="lastName">Last name</label>
+          <input name="lastName" type="text"/>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input name="email" type="email"/>
+        </div>
+        <div>
+          <label for="emailConfirm">Email confirm</label>
+          <input name="emailConfirm" type="email"/>
+        </div>
+        <div>
+          <label for="phone">Phone</label>
+          <input name="phone" type="tel"/>
+        </div>
+        <div>
+          <label for="subject">Subject</label>
+          <input name="subject" type="text"/>
+        </div>
+        <div>
+          <label for="message">Message</label>
+          <input name="message" type="text"/>
+        </div>
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

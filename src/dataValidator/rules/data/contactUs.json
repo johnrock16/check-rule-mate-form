@@ -1,0 +1,37 @@
+{
+  "name": {
+    "rule": "name",
+    "required": true,
+    "attributes": {
+      "label": "First name",
+      "maxLength": 32
+    }
+  },
+  "lastName": {
+    "rule": "name",
+    "required": true,
+    "attributes": {
+      "label": "Last name"
+    }
+  },
+  "email": {
+    "rule": "email",
+    "required": true
+  },
+  "emailConfirm": {
+    "rule": "email--confirm",
+    "required": true
+  },
+  "phone": {
+    "rule": "phone",
+    "required": false
+  },
+  "subject": {
+    "rule": "hasText",
+    "required": true
+  },
+  "message": {
+    "rule": "hasText",
+    "required": true
+  }
+}
