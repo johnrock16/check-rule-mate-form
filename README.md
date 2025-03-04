@@ -65,11 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   formManager.addAttributes();
 
-  formElement.addEventListener('submit', (e) => {
-    formManager.handleFormSubmit(e, {
-      onSuccess: (result) => alert('Form is valid! ' + JSON.stringify(result, null, 2)),
-      onError: (error) => alert('Form is invalid! ' + JSON.stringify(error, null, 2)),
-    });
+  formElement.addEventListener('submit', async (e) => {
+    const formValidated = await formManaager.handleFormSubmit(e);
+    console.log(formValidated);
+    if (formValidated.error) {
+      // error scenario
+    } else if (formValidated.ok) {
+      // ok scenario
+    }
   });
 });
 ```

@@ -13,22 +13,22 @@ function FormManager(formElement, dataRule, rules, validationHelpers, dataErrorM
     toogleErrorMessage(e.target, inputValidated?.dataErrors?.[e.target.name]);
   }
 
-  async function handleFormSubmit(e, {onSuccess, onError} = {onSuccess: null, onError: null}) {
+  async function handleFormSubmit(e) {
     e.preventDefault();
-    const formData = getFormData(formElement);
-    const formValidated = await dataValidate(formData, {validationHelpers, rules, dataRule: dataRule, dataErrorMessages});
-
-    if(formValidated.error) {
-      state.onceError = true;
-      formElement.querySelectorAll('input').forEach((inputElement) => {
-        toogleErrorMessage(inputElement, formValidated?.dataErrors?.[inputElement.name]);
-      });
-      if (onError && typeof onError === 'function') {
-        onError(formValidated)
+    return new Promise(async (resolve, reject) => {
+      const formData = getFormData(formElement);
+      const formValidated = await dataValidate(formData, {validationHelpers, rules, dataRule: dataRule, dataErrorMessages});
+      if (formValidated.error) {
+        state.onceError = true;
+        formElement.querySelectorAll('input').forEach((inputElement) => {
+          toogleErrorMessage(inputElement, formValidated?.dataErrors?.[inputElement.name]);
+        });
+        resolve({...formValidated, formData});
+      } else if (formValidated.ok) {
+        resolve({...formValidated, formData});
       }
-    } else if (formValidated.ok && onSuccess && typeof onSuccess === 'function') {
-      onSuccess({...formValidated, formData})
-    }
+      reject({error: true});
+    });
   }
 
   function handleFormReset() {
