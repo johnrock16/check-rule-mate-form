@@ -6,23 +6,9 @@
 
 - ✅ **Framework-agnostic**: Works with vanilla JavaScript and can be easily integrated into React, Vue, Svelte, and others.
 - ✅ **Built-in validation**: Uses check-rule-mate for powerful validation.
-- ✅ **Async validation support**: Handle real-time API validation.
+- ✅ **Async validation support**: Handle API validation.
 - ✅ **Automatic attribute management**: Define rules and attributes directly in JSON.
 - ✅ **Custom error handling**: Automatically applies errors based on check-rule-mate structure.
-
-## 📦 Installation
-
-You can install it via npm:
-
-```sh
-npm install check-rule-mate-form
-```
-
-Or via yarn:
-
-```sh
-yarn add check-rule-mate-form
-```
 
 ## 🛠️ Basic Usage
 
@@ -94,5 +80,5 @@ formElement.addEventListener('reset', formManager.handleFormReset);
 (Coming soon) Full documentation will be available soon.
 
 ## 📝 License
-MIT License.
+ISC License.
 
