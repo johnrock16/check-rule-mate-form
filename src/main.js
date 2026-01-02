@@ -1,3 +1,3 @@
-import FormManager from './js/formManager';
+import { FormManager } from './js/formManager';
 
 export { FormManager };

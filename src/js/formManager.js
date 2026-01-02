@@ -1,6 +1,6 @@
 import { createValidator } from "check-rule-mate";
 
-function FormManager(formElement, { schema, rules, validationHelpers, errorMessages, options }) {
+export function FormManager(formElement, { schema, rules, validationHelpers, errorMessages, options }) {
   const formValidator = createValidator(getFormData(formElement), { validationHelpers: validationHelpers, rules: rules, schema: schema, errorMessages: errorMessages, options: options});
   const state = {
     onceError: false
@@ -124,5 +124,3 @@ function FormManager(formElement, { schema, rules, validationHelpers, errorMessa
     getFormData
   }
 }
-
-export default FormManager;
