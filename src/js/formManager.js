@@ -1,27 +1,34 @@
-import { dataValidate } from "check-rule-mate";
+import { createValidator } from "check-rule-mate";
 
-function FormManager(formElement, dataRule, rules, validationHelpers, dataErrorMessages) {
+function FormManager(formElement, { schema, rules, validationHelpers, errorMessages, options }) {
+  const formValidator = createValidator(getFormData(formElement), { validationHelpers: validationHelpers, rules: rules, schema: schema, errorMessages: errorMessages, options: options});
   const state = {
     onceError: false
   }
 
   async function handleInputChange(e) {
-    if (!state.onceError || !dataRule[e.target.name]) return;
+    if (!state.onceError || !schema[e.target.name]) return;
     const formData = getFormData(formElement);
-    const formRule = mockInputDataRules(formData);
-    const inputValidated = await dataValidate({...formData, [e.target.name]:e.target.value}, {validationHelpers, rules, dataRule: {...formRule, [e.target.name]: dataRule[e.target.name]}, dataErrorMessages});
-    toogleErrorMessage(e.target, inputValidated?.dataErrors?.[e.target.name]);
+
+    formValidator.setData({...formData, [e.target.name]:e.target.value});
+
+    const inputValidated = await formValidator.validateField(e.target.name);
+
+    toogleErrorMessage(e.target, inputValidated?.errors);
   }
 
   async function handleFormSubmit(e) {
     e.preventDefault();
     return new Promise(async (resolve, reject) => {
       const formData = getFormData(formElement);
-      const formValidated = await dataValidate(formData, {validationHelpers, rules, dataRule: dataRule, dataErrorMessages});
+      formValidator.setData(formData)
+
+      const formValidated = await formValidator.validate()
+
       if (formValidated.error) {
         state.onceError = true;
-        formElement.querySelectorAll('input').forEach((inputElement) => {
-          toogleErrorMessage(inputElement, formValidated?.dataErrors?.[inputElement.name]);
+        formElement.querySelectorAll('input, select, textarea').forEach((inputElement) => {
+          toogleErrorMessage(inputElement, formValidated?.errors?.[inputElement.name]);
         });
         resolve({...formValidated, formData});
       } else if (formValidated.ok) {
@@ -32,7 +39,7 @@ function FormManager(formElement, dataRule, rules, validationHelpers, dataErrorM
   }
 
   function handleFormReset() {
-    formElement.querySelectorAll('input').forEach((inputElement) => {
+    formElement.querySelectorAll('input, select, textarea').forEach((inputElement) => {
       const fieldElement = inputElement.parentElement;
       const errorElement = fieldElement.querySelector('.check-rule-mate-error');
 
@@ -64,35 +71,24 @@ function FormManager(formElement, dataRule, rules, validationHelpers, dataErrorM
     return formData;
   }
 
-  function mockInputDataRules(formData) {
-    const formRule = {};
-    Object.keys(formData).forEach((key) => {
-      formRule[key] = {
-        rule: "hasText",
-        required: false
-      }
-    });
-    return formRule;
-  }
-
   function addAttributes() {
-    Object.keys(dataRule).forEach((key) => {
-      if (rules[dataRule[key].rule]?.attributes) {
-        Object.keys(rules[dataRule[key].rule]?.attributes).forEach((attributeKey) => {
-          if (rules[dataRule[key].rule]?.attributes?.[attributeKey]) {
+    Object.keys(schema).forEach((key) => {
+      if (rules[schema[key].rule]?.attributes) {
+        Object.keys(rules[schema[key].rule]?.attributes).forEach((attributeKey) => {
+          if (rules[schema[key].rule]?.attributes?.[attributeKey]) {
             const inputElement = formElement.querySelector(`input[name=${key}]`);
-            inputElement[attributeKey] = rules[dataRule[key].rule]?.attributes[attributeKey];
+            inputElement[attributeKey] = rules[schema[key].rule]?.attributes[attributeKey];
           }
         });
       }
-      if (dataRule[key].attributes) {
-        Object.keys(dataRule[key].attributes).forEach((attributeKey) => {
+      if (schema[key].attributes) {
+        Object.keys(schema[key].attributes).forEach((attributeKey) => {
           if (attributeKey === 'label') {
             const labelElement = formElement.querySelector(`label[for=${key}]`);
-            labelElement.textContent = dataRule[key].attributes[attributeKey];
+            labelElement.textContent = schema[key].attributes[attributeKey];
           } else {
             const inputElement = formElement.querySelector(`input[name=${key}]`);
-            inputElement[attributeKey] = dataRule[key].attributes[attributeKey];
+            inputElement[attributeKey] = schema[key].attributes[attributeKey];
           }
         });
       }
@@ -105,11 +101,11 @@ function FormManager(formElement, dataRule, rules, validationHelpers, dataErrorM
     fieldElement.classList.add('field-error');
     if (dataError) {
       if (fieldErrorElement) {
-        fieldErrorElement.textContent = dataError.errorMessage;
+        fieldErrorElement.textContent = dataError.message;
       } else {
         const newFieldErrorElement = window.document.createElement('span');
         newFieldErrorElement.classList.add('check-rule-mate-error');
-        newFieldErrorElement.innerHTML = dataError.errorMessage;
+        newFieldErrorElement.innerHTML = dataError.message;
         fieldElement.appendChild(newFieldErrorElement);
       }
     } else {
