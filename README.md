@@ -43,11 +43,12 @@ Create a JSON file with validation rules:
 import { myValidator } from './validators.js';
 import { FormManager } from 'check-rule-mate-form';
 import RULES from './rules.json';
+import SCHEMA from './schema.json';
 import ERROR_MESSAGES from './errors.json';
 
 document.addEventListener('DOMContentLoaded', () => {
   const formElement = document.getElementById('contact-form');
-  const formManager = new FormManager(formElement, RULES, myValidator, ERROR_MESSAGES);
+  const formManager = new FormManager(formElement, { schema: SCHEMA, rules: RULES, validationHelpers: myValidator, errorMessages: ERROR_MESSAGES, options: { abortEarly: false, propertiesMustMatch: false }} );
 
   formManager.addAttributes();
 
