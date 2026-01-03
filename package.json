@@ -1,8 +1,8 @@
 {
   "name": "check-rule-mate-form",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
-  "main": "main.js",
+  "main": "./dist/main.cjs.js",
   "scripts": {
     "example:vanilla": "webpack serve --mode development",
     "build:webpack": "webpack --mode production",
@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "check-rule-mate": "^0.4.3"
+    "check-rule-mate": "^0.5.9"
   },
   "devDependencies": {
     "@babel/core": "^7.26.9",
@@ -22,8 +22,8 @@
     "esbuild": "^0.25.0",
     "html-webpack-plugin": "^5.6.3",
     "style-loader": "^4.0.0",
-    "webpack": "^5.98.0",
+    "webpack": "^5.104.1",
     "webpack-cli": "^6.0.1",
-    "webpack-dev-server": "^5.2.0"
+    "webpack-dev-server": "^5.2.2"
   }
 }
